@@ -7,15 +7,16 @@
 //
 
 import UIKit
+import Parse
 
 class MainViewController: UIViewController, YTPlayerViewDelegate {
 
     var name: String?
     var email: String?
     @IBOutlet var playerView: YTPlayerView!
-    @IBAction func playButtonClicked(sender: AnyObject) {
-        self.playerView.playVideo()
-    }
+    var twitterFeed: TwitterFeedTableViewController?
+    
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,11 +24,18 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
         var playerVars = ["playsinline" : 1]
         self.playerView.loadWithVideoId("M7lc1UVf-VE", playerVars: playerVars)
         
+        
+        
         // Do any additional setup after loading the view.
     }
     override func viewDidAppear(animated: Bool) {
     //self.playerView.loadVideoByURL("https://www.youtube.com/watch?v=GttoIyB_lEQ", startSeconds: 0.0, suggestedQuality: YTPlaybackQuality.Medium)
+        registerNotifications()
+    }
     
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(true)
+        deregisterNotifications()
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,9 +47,32 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
     }
     
     func playerViewDidBecomeReady(playerView: YTPlayerView!) {
-        self.playerView.playVideo()
+        if(self.twitterFeed!.loaded == false) {
+            self.twitterFeed!.loaded = true
+            self.twitterFeed?.tableView.reloadData()
+        }
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if(segue.identifier == "TwitterContainerSeg") {
+            self.twitterFeed = segue.destinationViewController as? TwitterFeedTableViewController
+            self.twitterFeed!.loaded = false
+        }
+    }
+    
+    func stopActivityIndicator() {
+        self.activityIndicator.stopAnimating()
+    }
+    
+    //MARK: - Notifications
+    
+    func registerNotifications() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "stopActivityIndicator", name: tweetsDidLoadAsynchronously, object: nil)
+    }
+    
+    func deregisterNotifications() {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
 
     /*
     // MARK: - Navigation

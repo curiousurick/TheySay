@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>1812C841-B48E-4BB7-89D1-0A5E94E126C5</string>
 	<key>IDESourceControlProjectName</key>
-	<string>YouSay</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>263DE03389ECE1C05D16BC644015CD8699ADC3DA</key>
 		<string>https://github.com/curiousurick/TheySay.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>YouSay.xcodeproj</string>
+	<string>YouSay.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>263DE03389ECE1C05D16BC644015CD8699ADC3DA</key>

@@ -3,6 +3,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Splash View Controller-->
@@ -31,6 +32,9 @@
                                 <state key="normal" title="Twitter">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="twitterLoginClicked:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ZMY-Ae-2UJ"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -58,36 +62,69 @@
                         <subviews>
                             <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="KN6-QC-hdA" customClass="YTPlayerView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="338"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="KN6-QC-hdA" secondAttribute="height" multiplier="16:9" id="y7D-c1-AfX"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="65m-ki-s8v">
-                                <rect key="frame" x="210" y="445" width="46" height="30"/>
-                                <state key="normal" title="Button">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AV8-vl-z5o">
+                                <rect key="frame" x="0.0" y="338" width="600" height="198"/>
                                 <connections>
-                                    <action selector="playButtonClicked:" destination="OtI-Rn-oQT" eventType="touchUpInside" id="aTG-rd-FeC"/>
+                                    <segue destination="dec-OH-2mu" kind="embed" identifier="TwitterContainerSeg" id="26k-UN-ZX0"/>
                                 </connections>
-                            </button>
+                            </containerView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="TOH-sK-zYS">
+                                <rect key="frame" x="290" y="427" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="0.28780324835526316" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="AV8-vl-z5o" firstAttribute="top" secondItem="KN6-QC-hdA" secondAttribute="bottom" id="0Cg-vy-2iP"/>
                             <constraint firstAttribute="trailing" secondItem="KN6-QC-hdA" secondAttribute="trailing" id="28K-N0-zCT"/>
                             <constraint firstItem="KN6-QC-hdA" firstAttribute="leading" secondItem="jdJ-Zi-Ooh" secondAttribute="leading" id="Jjz-GQ-ii0"/>
+                            <constraint firstItem="TOH-sK-zYS" firstAttribute="centerX" secondItem="AV8-vl-z5o" secondAttribute="centerX" id="LT4-Ye-3Xe"/>
+                            <constraint firstItem="TOH-sK-zYS" firstAttribute="centerY" secondItem="AV8-vl-z5o" secondAttribute="centerY" id="TLR-Rr-sM5"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="AV8-vl-z5o" secondAttribute="trailing" constant="-16" id="Vh3-4x-kPZ"/>
+                            <constraint firstItem="AV8-vl-z5o" firstAttribute="centerX" secondItem="KN6-QC-hdA" secondAttribute="centerX" id="fUJ-a8-VCT"/>
+                            <constraint firstItem="AV8-vl-z5o" firstAttribute="leading" secondItem="jdJ-Zi-Ooh" secondAttribute="leadingMargin" constant="-16" id="fcj-NX-9tC"/>
                             <constraint firstItem="KN6-QC-hdA" firstAttribute="top" secondItem="8aC-WC-e4L" secondAttribute="bottom" id="jLA-Z1-A7R"/>
+                            <constraint firstItem="fFo-XI-H66" firstAttribute="top" secondItem="AV8-vl-z5o" secondAttribute="bottom" id="xsb-xh-eO4"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="TOH-sK-zYS" id="d94-Kg-hGW"/>
                         <outlet property="playerView" destination="KN6-QC-hdA" id="abg-4q-5ZQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sFQ-74-utg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1735" y="511"/>
+        </scene>
+        <!--Twitter Feed Table View Controller-->
+        <scene sceneID="XwU-5X-UzH">
+            <objects>
+                <tableViewController id="dec-OH-2mu" customClass="TwitterFeedTableViewController" customModule="YouSay" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="4w5-CR-veY">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="198"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TwitterCell" id="mXz-Hz-Et6">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mXz-Hz-Et6" id="rgb-QA-6Hk">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="dec-OH-2mu" id="2bx-ei-uEk"/>
+                            <outlet property="delegate" destination="dec-OH-2mu" id="fKC-GQ-biz"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ge9-Fa-4pg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1735" y="1058"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="aIr-WS-F4h">

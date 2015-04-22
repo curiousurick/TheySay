@@ -9,21 +9,25 @@
 import UIKit
 import Parse
 import Bolts
+import Fabric
+import TwitterKit
+
+var tweetsDidLoadAsynchronously = "tweetsDidLoadAsynchronously"
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         Parse.enableLocalDatastore()
-        
+        Fabric.with([Twitter()])
         // Initialize Parse.
         Parse.setApplicationId("n8JolGHQ4VMQ1dinZaBpTXmdMwGCUjiEUUmjcsgb",
             clientKey: "bJNHgbVUqRDbSBqK6c4Pi4S3OvkM37J3TODIAWmS")
-        
+        PFTwitterUtils.initializeWithConsumerKey("dZCDuwg56yYLfc9CgwsiB3jX6",
+            consumerSecret:"ZGxOe2JbYbmCjhC3RHBm37HqqppRkVN10lIFcuVy8PyyOqmUv9")
         
         //Weird issue that the Parse library has now that Swift 1.2 has been released.
         //waiting on update

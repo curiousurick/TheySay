@@ -37,11 +37,12 @@
 		5E0169521AE79A22006313F2 /* ParseFacebookUtilsV4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E0169501AE79A22006313F2 /* ParseFacebookUtilsV4.framework */; };
 		5E0169531AE79AC9006313F2 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E0169311AE77CD9006313F2 /* Social.framework */; };
 		5E0169561AE79AEA006313F2 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E0169541AE79ACA006313F2 /* Accounts.framework */; };
-		5E0169651AE7A99A006313F2 /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = 5E0169631AE7A99A006313F2 /* Assets */; };
-		5E0169661AE7A99A006313F2 /* Classes in Resources */ = {isa = PBXBuildFile; fileRef = 5E0169641AE7A99A006313F2 /* Classes */; };
-		5E01696C1AE8140A006313F2 /* YTPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E01696B1AE8140A006313F2 /* YTPlayerView.m */; };
-		5E01696E1AE81410006313F2 /* YTPlayerView-iframe-player.html in Resources */ = {isa = PBXBuildFile; fileRef = 5E01696D1AE81410006313F2 /* YTPlayerView-iframe-player.html */; };
-		5E0169711AE81639006313F2 /* VideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E0169701AE81639006313F2 /* VideoViewController.m */; };
+		5E0169731AE824C9006313F2 /* TwitterFeedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0169721AE824C9006313F2 /* TwitterFeedTableViewController.swift */; };
+		5E0169841AE82BEA006313F2 /* YTPlayerView-iframe-player.html in Resources */ = {isa = PBXBuildFile; fileRef = 5E0169811AE82BEA006313F2 /* YTPlayerView-iframe-player.html */; };
+		5E0169851AE82BEA006313F2 /* YTPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E0169831AE82BEA006313F2 /* YTPlayerView.m */; };
+		5E0169A51AE84078006313F2 /* TwitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E0169A21AE84078006313F2 /* TwitterKit.framework */; };
+		5E0169A61AE84078006313F2 /* TwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5E0169A31AE84078006313F2 /* TwitterKitResources.bundle */; };
+		5E0169A71AE84078006313F2 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E0169A41AE84078006313F2 /* Fabric.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,19 @@
 			remoteInfo = YouSay;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5E01699A1AE82D4E006313F2 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5E0168F51AE77BD4006313F2 /* YouSay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YouSay.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,13 +104,13 @@
 		5E01694F1AE79A22006313F2 /* ParseFacebookUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ParseFacebookUtils.framework; path = Frameworks/ParseFacebookUtils.framework; sourceTree = "<group>"; };
 		5E0169501AE79A22006313F2 /* ParseFacebookUtilsV4.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ParseFacebookUtilsV4.framework; path = Frameworks/ParseFacebookUtilsV4.framework; sourceTree = "<group>"; };
 		5E0169541AE79ACA006313F2 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
-		5E0169631AE7A99A006313F2 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
-		5E0169641AE7A99A006313F2 /* Classes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Classes; sourceTree = "<group>"; };
-		5E01696A1AE8140A006313F2 /* YTPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YTPlayerView.h; path = Classes/YTPlayerView.h; sourceTree = "<group>"; };
-		5E01696B1AE8140A006313F2 /* YTPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YTPlayerView.m; path = Classes/YTPlayerView.m; sourceTree = "<group>"; };
-		5E01696D1AE81410006313F2 /* YTPlayerView-iframe-player.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "YTPlayerView-iframe-player.html"; path = "Assets/YTPlayerView-iframe-player.html"; sourceTree = "<group>"; };
-		5E01696F1AE81639006313F2 /* VideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoViewController.h; sourceTree = "<group>"; };
-		5E0169701AE81639006313F2 /* VideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoViewController.m; sourceTree = "<group>"; };
+		5E0169721AE824C9006313F2 /* TwitterFeedTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterFeedTableViewController.swift; sourceTree = "<group>"; };
+		5E0169811AE82BEA006313F2 /* YTPlayerView-iframe-player.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "YTPlayerView-iframe-player.html"; path = "Frameworks/Assets/YTPlayerView-iframe-player.html"; sourceTree = "<group>"; };
+		5E0169821AE82BEA006313F2 /* YTPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YTPlayerView.h; path = Frameworks/Classes/YTPlayerView.h; sourceTree = "<group>"; };
+		5E0169831AE82BEA006313F2 /* YTPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YTPlayerView.m; path = Frameworks/Classes/YTPlayerView.m; sourceTree = "<group>"; };
+		5E0169A21AE84078006313F2 /* TwitterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TwitterKit.framework; sourceTree = "<group>"; };
+		5E0169A31AE84078006313F2 /* TwitterKitResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TwitterKitResources.bundle; path = TwitterKit.framework/Versions/A/Resources/TwitterKitResources.bundle; sourceTree = "<group>"; };
+		5E0169A41AE84078006313F2 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +129,7 @@
 				5E0169481AE78E06006313F2 /* FBSDKShareKit.framework in Frameworks */,
 				5E0169391AE77CD9006313F2 /* libsqlite3.dylib in Frameworks */,
 				5E01693A1AE77CD9006313F2 /* libz.dylib in Frameworks */,
+				5E0169A51AE84078006313F2 /* TwitterKit.framework in Frameworks */,
 				5E01693B1AE77CD9006313F2 /* MobileCoreServices.framework in Frameworks */,
 				5E01693C1AE77CD9006313F2 /* QuartzCore.framework in Frameworks */,
 				5E01693D1AE77CD9006313F2 /* Security.framework in Frameworks */,
@@ -124,6 +139,7 @@
 				5E0169251AE77C5F006313F2 /* ParseUI.framework in Frameworks */,
 				5E0169211AE77C5F006313F2 /* Parse.framework in Frameworks */,
 				5E0169221AE77C5F006313F2 /* ParseCrashReporting.framework in Frameworks */,
+				5E0169A71AE84078006313F2 /* Fabric.framework in Frameworks */,
 				5E0169201AE77C5F006313F2 /* Bolts.framework in Frameworks */,
 				5E0169511AE79A22006313F2 /* ParseFacebookUtils.framework in Frameworks */,
 				5E01694E1AE79447006313F2 /* FacebookSDK.framework in Frameworks */,
@@ -146,6 +162,9 @@
 				5E0168F71AE77BD4006313F2 /* YouSay */,
 				5E01690D1AE77BD4006313F2 /* YouSayTests */,
 				5E0168F61AE77BD4006313F2 /* Products */,
+				5E0169A21AE84078006313F2 /* TwitterKit.framework */,
+				5E0169A31AE84078006313F2 /* TwitterKitResources.bundle */,
+				5E0169A41AE84078006313F2 /* Fabric.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -161,18 +180,12 @@
 		5E0168F71AE77BD4006313F2 /* YouSay */ = {
 			isa = PBXGroup;
 			children = (
-				5E01696A1AE8140A006313F2 /* YTPlayerView.h */,
-				5E01696B1AE8140A006313F2 /* YTPlayerView.m */,
-				5E01696D1AE81410006313F2 /* YTPlayerView-iframe-player.html */,
-				5E0169631AE7A99A006313F2 /* Assets */,
-				5E0169641AE7A99A006313F2 /* Classes */,
 				5E0169261AE77C6A006313F2 /* Frameworks */,
 				5E0168FA1AE77BD4006313F2 /* AppDelegate.swift */,
 				5E0168FC1AE77BD4006313F2 /* SplashViewController.swift */,
 				5E0168FE1AE77BD4006313F2 /* Main.storyboard */,
+				5E0169721AE824C9006313F2 /* TwitterFeedTableViewController.swift */,
 				5E01694B1AE79273006313F2 /* MainViewController.swift */,
-				5E01696F1AE81639006313F2 /* VideoViewController.h */,
-				5E0169701AE81639006313F2 /* VideoViewController.m */,
 				5E0169011AE77BD4006313F2 /* Images.xcassets */,
 				5E0169031AE77BD4006313F2 /* LaunchScreen.xib */,
 				5E0168F81AE77BD4006313F2 /* Supporting Files */,
@@ -208,6 +221,7 @@
 		5E0169261AE77C6A006313F2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5E0169871AE82C18006313F2 /* YoutubePlayer */,
 				5E0169541AE79ACA006313F2 /* Accounts.framework */,
 				5E0169421AE78DB4006313F2 /* YouSay-Bridging.h */,
 				5E0169281AE77CD9006313F2 /* AudioToolbox.framework */,
@@ -236,6 +250,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		5E0169871AE82C18006313F2 /* YoutubePlayer */ = {
+			isa = PBXGroup;
+			children = (
+				5E0169811AE82BEA006313F2 /* YTPlayerView-iframe-player.html */,
+				5E0169821AE82BEA006313F2 /* YTPlayerView.h */,
+				5E0169831AE82BEA006313F2 /* YTPlayerView.m */,
+			);
+			name = YoutubePlayer;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -246,6 +270,8 @@
 				5E0168F11AE77BD4006313F2 /* Sources */,
 				5E0168F21AE77BD4006313F2 /* Frameworks */,
 				5E0168F31AE77BD4006313F2 /* Resources */,
+				5E01699A1AE82D4E006313F2 /* Copy Frameworks */,
+				5E0169A11AE8403E006313F2 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -317,11 +343,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E0169001AE77BD4006313F2 /* Main.storyboard in Resources */,
-				5E0169651AE7A99A006313F2 /* Assets in Resources */,
-				5E01696E1AE81410006313F2 /* YTPlayerView-iframe-player.html in Resources */,
-				5E0169661AE7A99A006313F2 /* Classes in Resources */,
+				5E0169841AE82BEA006313F2 /* YTPlayerView-iframe-player.html in Resources */,
 				5E0169051AE77BD4006313F2 /* LaunchScreen.xib in Resources */,
 				5E0169021AE77BD4006313F2 /* Images.xcassets in Resources */,
+				5E0169A61AE84078006313F2 /* TwitterKitResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,15 +359,31 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		5E0169A11AE8403E006313F2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run 5ccfe10b9ebda01a6e903bdcb978bd5e722ac7a0 72caaacdba2596865c4547401dca2476d7eb5a1e891bc6a64832bf9b5b4b61ea";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		5E0168F11AE77BD4006313F2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E0169711AE81639006313F2 /* VideoViewController.m in Sources */,
 				5E01694C1AE79273006313F2 /* MainViewController.swift in Sources */,
+				5E0169851AE82BEA006313F2 /* YTPlayerView.m in Sources */,
 				5E0168FD1AE77BD4006313F2 /* SplashViewController.swift in Sources */,
-				5E01696C1AE8140A006313F2 /* YTPlayerView.m in Sources */,
+				5E0169731AE824C9006313F2 /* TwitterFeedTableViewController.swift in Sources */,
 				5E0168FB1AE77BD4006313F2 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -474,8 +515,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/YouSay/Frameworks",
 					"$(PROJECT_DIR)/YouSay",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = YouSay/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -491,8 +534,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/YouSay/Frameworks",
 					"$(PROJECT_DIR)/YouSay",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = YouSay/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -553,6 +598,7 @@
 				5E0169161AE77BD4006313F2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5E0169171AE77BD4006313F2 /* Build configuration list for PBXNativeTarget "YouSayTests" */ = {
 			isa = XCConfigurationList;
@@ -561,6 +607,7 @@
 				5E0169191AE77BD4006313F2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
