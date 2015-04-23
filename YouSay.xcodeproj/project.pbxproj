@@ -43,6 +43,7 @@
 		5E0169A51AE84078006313F2 /* TwitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E0169A21AE84078006313F2 /* TwitterKit.framework */; };
 		5E0169A61AE84078006313F2 /* TwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5E0169A31AE84078006313F2 /* TwitterKitResources.bundle */; };
 		5E0169A71AE84078006313F2 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E0169A41AE84078006313F2 /* Fabric.framework */; };
+		5EF9DD3D1AE881AF00149DC9 /* NetworkingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF9DD3C1AE881AF00149DC9 /* NetworkingEngine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +112,7 @@
 		5E0169A21AE84078006313F2 /* TwitterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TwitterKit.framework; sourceTree = "<group>"; };
 		5E0169A31AE84078006313F2 /* TwitterKitResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TwitterKitResources.bundle; path = TwitterKit.framework/Versions/A/Resources/TwitterKitResources.bundle; sourceTree = "<group>"; };
 		5E0169A41AE84078006313F2 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		5EF9DD3C1AE881AF00149DC9 /* NetworkingEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkingEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +188,7 @@
 				5E0168FE1AE77BD4006313F2 /* Main.storyboard */,
 				5E0169721AE824C9006313F2 /* TwitterFeedTableViewController.swift */,
 				5E01694B1AE79273006313F2 /* MainViewController.swift */,
+				5EF9DD3C1AE881AF00149DC9 /* NetworkingEngine.swift */,
 				5E0169011AE77BD4006313F2 /* Images.xcassets */,
 				5E0169031AE77BD4006313F2 /* LaunchScreen.xib */,
 				5E0168F81AE77BD4006313F2 /* Supporting Files */,
@@ -385,6 +388,7 @@
 				5E0168FD1AE77BD4006313F2 /* SplashViewController.swift in Sources */,
 				5E0169731AE824C9006313F2 /* TwitterFeedTableViewController.swift in Sources */,
 				5E0168FB1AE77BD4006313F2 /* AppDelegate.swift in Sources */,
+				5EF9DD3D1AE881AF00149DC9 /* NetworkingEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

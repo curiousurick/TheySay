@@ -15,6 +15,8 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
     var email: String?
     @IBOutlet var playerView: YTPlayerView!
     var twitterFeed: TwitterFeedTableViewController?
+    var tweetIds: [String]?
+    var networkEngine: NetworkingEngine = NetworkingEngine()
     
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
@@ -47,6 +49,8 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
     }
     
     func playerViewDidBecomeReady(playerView: YTPlayerView!) {
+        var videoUrl = self.playerView.videoUrl()
+        self.networkEngine.searchForTweets(self.playerView.videoUrl())
         if(self.twitterFeed!.loaded == false) {
             self.twitterFeed!.loaded = true
             self.twitterFeed?.tableView.reloadData()
