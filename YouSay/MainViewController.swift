@@ -14,23 +14,22 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
     var name: String?
     var email: String?
     @IBOutlet var playerView: YTPlayerView!
-    var twitterFeed: TwitterFeedTableViewController?
+    var pageController: ViewController?
     
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerNotifications()
         self.playerView.delegate = self
         var playerVars = ["playsinline" : 1]
         self.playerView.loadWithVideoId("M7lc1UVf-VE", playerVars: playerVars)
-        
-        
         
         // Do any additional setup after loading the view.
     }
     override func viewDidAppear(animated: Bool) {
     //self.playerView.loadVideoByURL("https://www.youtube.com/watch?v=GttoIyB_lEQ", startSeconds: 0.0, suggestedQuality: YTPlaybackQuality.Medium)
-        registerNotifications()
+        
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -47,16 +46,15 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
     }
     
     func playerViewDidBecomeReady(playerView: YTPlayerView!) {
-        if(self.twitterFeed!.loaded == false) {
-            self.twitterFeed!.loaded = true
-            self.twitterFeed?.tableView.reloadData()
-        }
+//        if(self.twitterFeed!.loaded == false) {
+//            self.twitterFeed!.loaded = true
+//            self.twitterFeed?.tableView.reloadData()
+//        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if(segue.identifier == "TwitterContainerSeg") {
-            self.twitterFeed = segue.destinationViewController as? TwitterFeedTableViewController
-            self.twitterFeed!.loaded = false
+            self.pageController = segue.destinationViewController as? ViewController
         }
     }
     
@@ -73,15 +71,5 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
     func deregisterNotifications() {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

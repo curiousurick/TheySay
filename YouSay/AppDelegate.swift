@@ -21,6 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
+        self.window!.backgroundColor = UIColor.clearColor()
+        
+        self.window!.opaque = false
+        
         Parse.enableLocalDatastore()
         Fabric.with([Twitter()])
         // Initialize Parse.

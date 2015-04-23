@@ -43,6 +43,9 @@
 		5E0169A51AE84078006313F2 /* TwitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E0169A21AE84078006313F2 /* TwitterKit.framework */; };
 		5E0169A61AE84078006313F2 /* TwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5E0169A31AE84078006313F2 /* TwitterKitResources.bundle */; };
 		5E0169A71AE84078006313F2 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E0169A41AE84078006313F2 /* Fabric.framework */; };
+		8C9F53791AE863680083A200 /* CAPSPageMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9F53781AE863680083A200 /* CAPSPageMenu.swift */; };
+		8C9F537B1AE863AF0083A200 /* FeedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9F537A1AE863AE0083A200 /* FeedTableViewController.swift */; };
+		8C9F537D1AE864BA0083A200 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9F537C1AE864BA0083A200 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +114,9 @@
 		5E0169A21AE84078006313F2 /* TwitterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TwitterKit.framework; sourceTree = "<group>"; };
 		5E0169A31AE84078006313F2 /* TwitterKitResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TwitterKitResources.bundle; path = TwitterKit.framework/Versions/A/Resources/TwitterKitResources.bundle; sourceTree = "<group>"; };
 		5E0169A41AE84078006313F2 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		8C9F53781AE863680083A200 /* CAPSPageMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAPSPageMenu.swift; sourceTree = "<group>"; };
+		8C9F537A1AE863AE0083A200 /* FeedTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedTableViewController.swift; sourceTree = "<group>"; };
+		8C9F537C1AE864BA0083A200 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,8 +188,11 @@
 			children = (
 				5E0169261AE77C6A006313F2 /* Frameworks */,
 				5E0168FA1AE77BD4006313F2 /* AppDelegate.swift */,
+				8C9F53781AE863680083A200 /* CAPSPageMenu.swift */,
 				5E0168FC1AE77BD4006313F2 /* SplashViewController.swift */,
+				8C9F537C1AE864BA0083A200 /* ViewController.swift */,
 				5E0168FE1AE77BD4006313F2 /* Main.storyboard */,
+				8C9F537A1AE863AE0083A200 /* FeedTableViewController.swift */,
 				5E0169721AE824C9006313F2 /* TwitterFeedTableViewController.swift */,
 				5E01694B1AE79273006313F2 /* MainViewController.swift */,
 				5E0169011AE77BD4006313F2 /* Images.xcassets */,
@@ -382,8 +391,11 @@
 			files = (
 				5E01694C1AE79273006313F2 /* MainViewController.swift in Sources */,
 				5E0169851AE82BEA006313F2 /* YTPlayerView.m in Sources */,
+				8C9F53791AE863680083A200 /* CAPSPageMenu.swift in Sources */,
+				8C9F537B1AE863AF0083A200 /* FeedTableViewController.swift in Sources */,
 				5E0168FD1AE77BD4006313F2 /* SplashViewController.swift in Sources */,
 				5E0169731AE824C9006313F2 /* TwitterFeedTableViewController.swift in Sources */,
+				8C9F537D1AE864BA0083A200 /* ViewController.swift in Sources */,
 				5E0168FB1AE77BD4006313F2 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
