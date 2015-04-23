@@ -202,11 +202,23 @@ class TwitterFeedTableViewController: UIViewController, UITableViewDataSource, U
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete {
-            var tweetId = PFObject(className: "Tweets")
-            tweetId["TweetId"] = self.tweetIds[indexPath.row]
+            
             var user = PFUser.currentUser()
-            user?.removeObject(tweetId, forKey: "Tweets")
-            user?.saveInBackground()
+            //var tweetId = PFObject(className: "Tweets")
+            var query = PFQuery(className: "Tweets")
+            query.whereKey("createdBy", equalTo: user!.objectId!)
+            query.whereKey("TweetId", equalTo: self.tweetIds[indexPath.row])
+            query.getFirstObjectInBackgroundWithBlock({ (object: PFObject?, error:NSError?) -> Void in
+                object?.deleteInBackground()
+                
+            })
+            self.tweetIds.removeAtIndex(indexPath.row)
+            self.tweets.removeAtIndex(indexPath.row)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            
+            
+//            self.tweets.removeAtIndex(indexPath.row)
+//            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
         }
     }
     
