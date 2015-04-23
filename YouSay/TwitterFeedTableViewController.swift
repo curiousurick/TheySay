@@ -10,8 +10,9 @@ import UIKit
 import Parse
 import TwitterKit
 
-
-class TwitterFeedTableViewController: UITableViewController, TWTRTweetViewDelegate {
+class TwitterFeedTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, TWTRTweetViewDelegate {
+    
+    @IBOutlet var tableView: UITableView!
     
     var tweets: [TWTRTweet] = [] {
         didSet {
@@ -38,6 +39,7 @@ class TwitterFeedTableViewController: UITableViewController, TWTRTweetViewDelega
             if let ts = tweets as? [TWTRTweet] {
                 self.tweets = ts
                 NSNotificationCenter.defaultCenter().postNotificationName(tweetsDidLoadAsynchronously, object: nil)
+                self.loaded = true
             } else {
                 println("Failed to load tweets: \(error.localizedDescription)")
             }
@@ -59,19 +61,19 @@ class TwitterFeedTableViewController: UITableViewController, TWTRTweetViewDelega
     
     // MARK: - Table view data source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
         return self.tweets.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let tweet = tweets[indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier(tweetTableReuseIdentifier, forIndexPath: indexPath) as! TWTRTweetTableViewCell
@@ -81,7 +83,7 @@ class TwitterFeedTableViewController: UITableViewController, TWTRTweetViewDelega
         return cell
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let tweet = tweets[indexPath.row]
         return TWTRTweetTableViewCell.heightForTweet(tweet, width:CGRectGetWidth(self.view.bounds))
     }
