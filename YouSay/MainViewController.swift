@@ -3,14 +3,14 @@
 //  YouSay
 //
 //  Created by George Urick on 4/22/15.
-//  Copyright (c) 2015 GameThrift. All rights reserved.
+//  Copyright (c) 2015 George Urick. All rights reserved.
 //
 
 import UIKit
 import Parse
 
-class MainViewController: UIViewController, YTPlayerViewDelegate {
-
+class MainViewController: UIViewController, YTPlayerViewDelegate, UIAlertViewDelegate {
+    
     var name: String?
     var email: String?
     @IBOutlet var playerView: YTPlayerView!
@@ -25,13 +25,34 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
         super.viewDidLoad()
         registerNotifications()
         self.playerView.delegate = self
-        var playerVars = ["playsinline" : 1]
-        self.playerView.loadWithVideoId("M7lc1UVf-VE", playerVars: playerVars)
+        
         
         // Do any additional setup after loading the view.
     }
     override func viewDidAppear(animated: Bool) {
-    //self.playerView.loadVideoByURL("https://www.youtube.com/watch?v=GttoIyB_lEQ", startSeconds: 0.0, suggestedQuality: YTPlaybackQuality.Medium)
+        var playerVars = ["playsinline" : 1]
+        self.playerView.loadWithVideoId("gnqYiHCS3Sc", playerVars: playerVars)
+    }
+    
+    @IBAction func changeVideoClicked(sender: AnyObject) {
+        var askToChange = UIAlertView(title: "Change Video", message: "Please Enter the URL", delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "Change")
+        askToChange.alertViewStyle = .PlainTextInput
+        askToChange.show()
+    }
+    
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex == 1 {
+            var videoUrl = alertView.textFieldAtIndex(0)?.text
+            var playerVars = ["playsinline" : 1]
+            self.playerView.loadWithVideoId(self.idFromUrl(videoUrl!), playerVars: playerVars)
+        }
+    }
+    
+    func idFromUrl(videoUrl: String) -> String? {
+        if(videoUrl.rangeOfString("watch") != nil) {
+            return videoUrl.stringByReplacingOccurrencesOfString("https://www.youtube.com/watch?v=", withString: "", options: nil, range: nil)
+        }
+        return videoUrl.lastPathComponent
         
     }
     
@@ -39,7 +60,7 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
         super.viewDidDisappear(true)
         deregisterNotifications()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -49,17 +70,29 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
     }
     
     func playerViewDidBecomeReady(playerView: YTPlayerView!) {
-        //var videoUrl = self.playerView.videoUrl()
-        //self.networkEngine.searchForTweets(self.playerView.videoUrl())
-        if(self.pageController?.twitterTable!.loaded == false) {
-            self.pageController!.twitterTable!.loaded = true
-            self.pageController!.twitterTable?.tableView.reloadData()
-        }
+        var videoId = self.idFromUrl(self.playerView.videoUrl().relativeString!)
+        self.networkEngine.searchForTweets(videoId, completionHandler: { (tweetIds) -> Void in
+            self.pageController?.twitterTable!.tweetIds = tweetIds!
+            self.pageController?.twitterTable!.videoId = self.idFromUrl(self.playerView.videoUrl().relativeString!)
+            self.pageController?.twitterTable!.loadTweetsOnRefresh()
+            
+            //self.pageController?.twitterTable!.tableView.reloadData()
+        })
     }
     
+    @IBAction func ShowSavedTweets(sender: AnyObject) {
+        self.performSegueWithIdentifier("ShowSavedTweets", sender: self)
+        
+        
+    }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if(segue.identifier == "TwitterContainerSeg") {
             self.pageController = segue.destinationViewController as? ViewController
+            
+        }
+        else if(segue.identifier == "ShowSavedTweets") {
+            var tweetVC = segue.destinationViewController as? TwitterFeedTableViewController
+            tweetVC?.viewingSavedTweets = true
         }
     }
     
@@ -76,5 +109,5 @@ class MainViewController: UIViewController, YTPlayerViewDelegate {
     func deregisterNotifications() {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
-
+    
 }

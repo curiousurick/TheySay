@@ -1,9 +1,9 @@
-
-//  FeedTableViewController.swift
-//  Video Feed
 //
-//  Created by Benji on 4/22/15.
-//  Copyright (c) 2015 Ben Heutmaker. All rights reserved.
+//  FeedTableViewController.swift
+//  YouSay
+//
+//  Created by George Urick on 4/22/15.
+//  Copyright (c) 2015 George Urick. All rights reserved.
 //
 
 import UIKit
@@ -23,6 +23,8 @@ class FeedTableViewController: UIViewController, UITableViewDelegate, UITableVie
         ]
     }
     
+    
+    
     func setDataSource(ds: NSObject) {
         tableView.dataSource = ds as? UITableViewDataSource
     }
@@ -39,6 +41,8 @@ class FeedTableViewController: UIViewController, UITableViewDelegate, UITableVie
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 20
     }
+    
+
 
     /*
     // MARK: - Navigation

@@ -1,9 +1,9 @@
 //
 //  ViewController.swift
-//  Video Feed
+//  YouSay
 //
-//  Created by Benji on 4/22/15.
-//  Copyright (c) 2015 Ben Heutmaker. All rights reserved.
+//  Created by George Urick on 4/22/15.
+//  Copyright (c) 2015 George Urick. All rights reserved.
 //
 
 import UIKit
@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     
     var twitterTable: TwitterFeedTableViewController!
     var facebookTable: FeedTableViewController!
-    var googlePlusTable: FeedTableViewController!
+    //var googlePlusTable: FeedTableViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +29,7 @@ class ViewController: UIViewController {
         
         twitterTable = self.storyboard?.instantiateViewControllerWithIdentifier("TwitterFeedTableViewController") as! TwitterFeedTableViewController
         twitterTable.loaded = false
-        
+        twitterTable.viewingSavedTweets = false
         twitterTable.title = "Twitter"
         controllerArray.append(twitterTable)
         
@@ -37,9 +37,9 @@ class ViewController: UIViewController {
         facebookTable.title = "Facebook"
         controllerArray.append(facebookTable)
         
-        googlePlusTable = self.storyboard?.instantiateViewControllerWithIdentifier("FeedTableViewController") as! FeedTableViewController
-        googlePlusTable.title = "Google Plus"
-        controllerArray.append(googlePlusTable)
+//        googlePlusTable = self.storyboard?.instantiateViewControllerWithIdentifier("FeedTableViewController") as! FeedTableViewController
+//        googlePlusTable.title = "Google Plus"
+//        controllerArray.append(googlePlusTable)
         
         // Customize menu (Optional)
         parameters = [

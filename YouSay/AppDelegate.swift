@@ -3,12 +3,11 @@
 //  YouSay
 //
 //  Created by George Urick on 4/21/15.
-//  Copyright (c) 2015 GameThrift. All rights reserved.
+//  Copyright (c) 2015 George Urick. All rights reserved.
 //
 
 import UIKit
 import Parse
-import Bolts
 import Fabric
 import TwitterKit
 
@@ -21,10 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        self.window!.backgroundColor = UIColor.clearColor()
-        
-        self.window!.opaque = false
-        
         Parse.enableLocalDatastore()
         Fabric.with([Twitter()])
         // Initialize Parse.
@@ -33,23 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         PFTwitterUtils.initializeWithConsumerKey("dZCDuwg56yYLfc9CgwsiB3jX6",
             consumerSecret:"ZGxOe2JbYbmCjhC3RHBm37HqqppRkVN10lIFcuVy8PyyOqmUv9")
         
-        //Weird issue that the Parse library has now that Swift 1.2 has been released.
-        //waiting on update
-        var launchO = launchOptions
-        if launchO == nil {
-            launchO = ["":""]
-        }
-        PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchO!)
-        
-//        PFTwitterUtils.initializeWithConsumerKey("YOUR CONSUMER KEY",
-//            consumerSecret:"YOUR CONSUMER SECRET")
-        
         PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
         return true
-    }
-    
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
-        return FBSDKApplicationDelegate.sharedInstance().application(application,openURL: url, sourceApplication: sourceApplication, annotation: annotation)
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -67,7 +47,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
-        FBSDKAppEvents.activateApp()
         
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }

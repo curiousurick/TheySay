@@ -675,6 +675,7 @@ NSString static *const kYTPlayerAdUrlRegexPattern = @"^http(s)://pubads.g.double
   NSString *embedHTML = [NSString stringWithFormat:embedHTMLTemplate, playerVarsJsonString];
   [self.webView loadHTMLString:embedHTML baseURL: self.originURL];
   [self.webView setDelegate:self];
+   // self.webView.backgroundColor = [[UIColor alloc] initWithRed:1 green:0 blue:0 alpha:1];
   self.webView.allowsInlineMediaPlayback = YES;
   self.webView.mediaPlaybackRequiresUserAction = NO;
   return YES;
@@ -769,6 +770,7 @@ NSString static *const kYTPlayerAdUrlRegexPattern = @"^http(s)://pubads.g.double
 
 - (UIWebView *)createNewWebView {
   UIWebView *webView = [[UIWebView alloc] initWithFrame:self.bounds];
+    webView.backgroundColor = [[UIColor alloc] initWithRed:1 green:0 blue:0 alpha:1];
   webView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
   webView.scrollView.scrollEnabled = NO;
   webView.scrollView.bounces = NO;
