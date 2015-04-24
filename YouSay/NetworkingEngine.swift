@@ -67,7 +67,7 @@ class NetworkingEngine: NSObject {
                         var idString = tweetId.stringValue
                         tweetIdsArray.append(idString)
                     }
-                    println(tweetIdsArray[0])
+                    
                     completionHandler(tweetIds: tweetIdsArray)
                     //println(tweetIdsArray.description)
                 }

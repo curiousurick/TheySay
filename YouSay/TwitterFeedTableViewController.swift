@@ -26,8 +26,6 @@ class TwitterFeedTableViewController: UIViewController, UITableViewDataSource, U
     var loaded: Bool?
     var viewingSavedTweets: Bool?
     
-    //@IBOutlet weak var loadingTweets: UIActivityIndicatorView!
-    
     var tweetIds = [String]()
     
     let tweetTableReuseIdentifier = "TweetCell"

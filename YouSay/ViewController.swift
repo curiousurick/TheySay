@@ -17,7 +17,8 @@ class ViewController: UIViewController {
     
     var twitterTable: TwitterFeedTableViewController!
     var facebookTable: FeedTableViewController!
-    //var googlePlusTable: FeedTableViewController!
+    var savedPostsTable: TwitterFeedTableViewController!
+//    var googlePlusTable: FeedTableViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +38,11 @@ class ViewController: UIViewController {
         facebookTable.title = "Facebook"
         controllerArray.append(facebookTable)
         
+        savedPostsTable = self.storyboard?.instantiateViewControllerWithIdentifier("TwitterFeedTableViewController") as! TwitterFeedTableViewController
+        savedPostsTable.title = "Saved"
+        savedPostsTable.viewingSavedTweets = true
+        controllerArray.append(savedPostsTable)
+        
 //        googlePlusTable = self.storyboard?.instantiateViewControllerWithIdentifier("FeedTableViewController") as! FeedTableViewController
 //        googlePlusTable.title = "Google Plus"
 //        controllerArray.append(googlePlusTable)
@@ -45,12 +51,12 @@ class ViewController: UIViewController {
         parameters = [
             "scrollMenuBackgroundColor": UIColor(red: 30/255, green: 29/255, blue: 32/255, alpha: 1),
             "viewBackgroundColor": UIColor(red: 30/255, green: 29/255, blue: 32/255, alpha: 1),
-            "selectionIndicatorColor": UIColor.blueColor(),
+            "selectionIndicatorColor": UIColor.orangeColor(),
             "addBottomMenuHairline": true,
             "menuItemFont": UIFont(name: "HelveticaNeue", size: 17.0)!,
-            "menuHeight": 44.0,
-            "selectionIndicatorHeight": 1.0,
-            "menuItemWidthBasedOnTitleTextWidth": true,
+            "menuItemWidth": 85,
+            "selectionIndicatorHeight": 5.0,
+            "menuItemWidthBasedOnTitleTextWidth": false,
             "selectedMenuItemLabelColor": UIColor.whiteColor(),
             "centerMenuItems": true,
             "hideTopMenuBar": false

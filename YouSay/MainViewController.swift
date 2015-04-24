@@ -9,15 +9,19 @@
 import UIKit
 import Parse
 
-class MainViewController: UIViewController, YTPlayerViewDelegate, UIAlertViewDelegate {
+class MainViewController: UIViewController, YTPlayerViewDelegate, UIAlertViewDelegate, UITextFieldDelegate {
     
     var name: String?
     var email: String?
     @IBOutlet var playerView: YTPlayerView!
+    @IBOutlet var searchTextField: SpringTextField!
+    @IBOutlet var searchButton: UIBarButtonItem!
     var twitterFeed: TwitterFeedTableViewController?
     var tweetIds: [String]?
     var networkEngine: NetworkingEngine = NetworkingEngine()
     var pageController: ViewController?
+    
+    var shouldShowSearchField = true
     
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
@@ -25,7 +29,6 @@ class MainViewController: UIViewController, YTPlayerViewDelegate, UIAlertViewDel
         super.viewDidLoad()
         registerNotifications()
         self.playerView.delegate = self
-        
         
         // Do any additional setup after loading the view.
     }
@@ -35,18 +38,59 @@ class MainViewController: UIViewController, YTPlayerViewDelegate, UIAlertViewDel
     }
     
     @IBAction func changeVideoClicked(sender: AnyObject) {
-        var askToChange = UIAlertView(title: "Change Video", message: "Please Enter the URL", delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "Change")
-        askToChange.alertViewStyle = .PlainTextInput
-        askToChange.show()
+        
+        if shouldShowSearchField == true {
+            
+            searchTextField.hidden = false
+            setUpSearchFieldAnimation("slideDown")
+            searchTextField.animate()
+            searchTextField.becomeFirstResponder()
+            
+            shouldShowSearchField = false
+        } else {
+            setUpSearchFieldAnimation("fadeOut")
+            self.searchTextField.animateNext({ () -> () in
+                self.searchTextField.hidden = true
+            })
+            
+            searchTextField.resignFirstResponder()
+            
+            shouldShowSearchField = true
+        }
+//        var askToChange = UIAlertView(title: "Change Video", message: "Please Enter the URL", delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "Change")
+//        askToChange.alertViewStyle = .PlainTextInput
+//        askToChange.show()
     }
     
-    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
-        if buttonIndex == 1 {
-            var videoUrl = alertView.textFieldAtIndex(0)?.text
-            var playerVars = ["playsinline" : 1]
-            self.playerView.loadWithVideoId(self.idFromUrl(videoUrl!), playerVars: playerVars)
+    func setUpSearchFieldAnimation(animation: String) {
+        searchTextField.animation = animation
+        if shouldShowSearchField {
+            searchTextField.force = 1
+            searchTextField.duration = 0.5
+            searchTextField.damping = 1
+        } else {
+            
         }
     }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if textField == searchTextField {
+            var videoUrl = textField.text
+            var playerVars = ["playsinline" : 1]
+            self.playerView.loadWithVideoId(self.idFromUrl(videoUrl!), playerVars: playerVars)
+            
+            changeVideoClicked(self)
+        }
+        return true
+    }
+    
+//    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+//        if buttonIndex == 1 {
+//            var videoUrl = alertView.textFieldAtIndex(0)?.text
+//            var playerVars = ["playsinline" : 1]
+//            self.playerView.loadWithVideoId(self.idFromUrl(videoUrl!), playerVars: playerVars)
+//        }
+//    }
     
     func idFromUrl(videoUrl: String) -> String? {
         if(videoUrl.rangeOfString("watch") != nil) {
