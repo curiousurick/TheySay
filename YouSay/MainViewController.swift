@@ -13,30 +13,31 @@ class MainViewController: UIViewController, YTPlayerViewDelegate, UIAlertViewDel
     
     var name: String?
     var email: String?
+    
+    var playerVars = ["playsinline" : 1]
+    var currentUrl: String?
+    
     @IBOutlet var playerView: YTPlayerView!
     @IBOutlet var searchTextField: SpringTextField!
     @IBOutlet var searchButton: UIBarButtonItem!
-    var twitterFeed: TwitterFeedTableViewController?
+    @IBOutlet var videoActivity: UIActivityIndicatorView!
+    
+    
     var tweetIds: [String]?
     var networkEngine: NetworkingEngine = NetworkingEngine()
-    var pageController: ViewController?
+    var pageController: PageViewController?
     
     var shouldShowSearchField = true
     
-    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        registerNotifications()
         self.playerView.delegate = self
-        
-        // Do any additional setup after loading the view.
+        self.videoActivity.startAnimating()
+        //default video
+        self.playerView.loadWithVideoId("gnqYiHCS3Sc", playerVars: self.playerVars)
     }
-    override func viewDidAppear(animated: Bool) {
-        var playerVars = ["playsinline" : 1]
-        self.playerView.loadWithVideoId("gnqYiHCS3Sc", playerVars: playerVars)
-    }
-    
     @IBAction func changeVideoClicked(sender: AnyObject) {
         
         if shouldShowSearchField == true {
@@ -45,7 +46,6 @@ class MainViewController: UIViewController, YTPlayerViewDelegate, UIAlertViewDel
             setUpSearchFieldAnimation("slideDown")
             searchTextField.animate()
             searchTextField.becomeFirstResponder()
-            
             shouldShowSearchField = false
         } else {
             setUpSearchFieldAnimation("fadeOut")
@@ -57,9 +57,6 @@ class MainViewController: UIViewController, YTPlayerViewDelegate, UIAlertViewDel
             
             shouldShowSearchField = true
         }
-//        var askToChange = UIAlertView(title: "Change Video", message: "Please Enter the URL", delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "Change")
-//        askToChange.alertViewStyle = .PlainTextInput
-//        askToChange.show()
     }
     
     func setUpSearchFieldAnimation(animation: String) {
@@ -73,85 +70,95 @@ class MainViewController: UIViewController, YTPlayerViewDelegate, UIAlertViewDel
         }
     }
     
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        self.shouldShowSearchField = false
+        self.changeVideoClicked(self)
+    }
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if textField == searchTextField {
-            var videoUrl = textField.text
-            var playerVars = ["playsinline" : 1]
-            self.playerView.loadWithVideoId(self.idFromUrl(videoUrl!), playerVars: playerVars)
+        if textField == searchTextField && (textField.text.length > 0) {
             
+            var videoUrl = textField.text
+            self.playerView.loadWithVideoId(self.idFromUrl(videoUrl!), playerVars: self.playerVars)
+            self.videoActivity.startAnimating()
             changeVideoClicked(self)
+            
         }
         return true
     }
-    
-//    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
-//        if buttonIndex == 1 {
-//            var videoUrl = alertView.textFieldAtIndex(0)?.text
-//            var playerVars = ["playsinline" : 1]
-//            self.playerView.loadWithVideoId(self.idFromUrl(videoUrl!), playerVars: playerVars)
-//        }
-//    }
-    
     func idFromUrl(videoUrl: String) -> String? {
-        if(videoUrl.rangeOfString("watch") != nil) {
+        if(videoUrl.rangeOfString("https://www.youtube.com/watch?v=") != nil) {
             return videoUrl.stringByReplacingOccurrencesOfString("https://www.youtube.com/watch?v=", withString: "", options: nil, range: nil)
+        }
+        else if(videoUrl.rangeOfString("https://www.youtube.com/watch") != nil) {
+            return videoUrl.stringByReplacingOccurrencesOfString("https://www.youtube.com/watch", withString: "", options: nil, range: nil)
         }
         return videoUrl.lastPathComponent
         
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(true)
-        deregisterNotifications()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    func playerView(playerView: YTPlayerView!, receivedError error: YTPlayerError) {
-        println(error)
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
     }
     
     func playerViewDidBecomeReady(playerView: YTPlayerView!) {
         var videoId = self.idFromUrl(self.playerView.videoUrl().relativeString!)
-        self.networkEngine.searchForTweets(videoId, completionHandler: { (tweetIds) -> Void in
-            self.pageController?.twitterTable!.tweetIds = tweetIds!
-            self.pageController?.twitterTable!.videoId = self.idFromUrl(self.playerView.videoUrl().relativeString!)
-            self.pageController?.twitterTable!.loadTweetsOnRefresh()
+        if self.videoActivity.isAnimating() {
+            self.videoActivity.stopAnimating()
+        }
+        //error or no video loaded
+        if videoId == " ?R4\\x01" || videoId == "" {
+            self.playerView.loadWithVideoId(self.idFromUrl(self.currentUrl!), playerVars: self.playerVars)
+            AppUtils.showAlert("Oops!", message: "Could not load tweets")
+            return
+        }
+        
+        self.currentUrl = self.playerView.videoUrl().relativeString!
+        self.networkEngine.searchForTweets(videoId, completionHandler: { (tweetIds, error) -> Void in
             
-            //self.pageController?.twitterTable!.tableView.reloadData()
+             if error == nil {
+                self.videoActivity.stopAnimating()
+                self.pageController?.twitterTable.tweetIds = tweetIds!
+                self.pageController?.twitterTable!.videoId = self.idFromUrl(self.playerView.videoUrl().relativeString!)
+                if tweetIds!.count == 0 {
+                    self.pageController?.twitterTable!.tweets = []
+                    self.pageController?.twitterTable!.tableView.reloadData()
+                }
+                self.pageController?.twitterTable!.loadTweetsOnRefresh()
+            }
+            else {
+                AppUtils.showAlert("Oops!", message: "Could not load tweets")
+            }
         })
+    }
+    
+    func playerView(playerView: YTPlayerView!, receivedError error: YTPlayerError) {
+        AppUtils.showAlert("Oops", message: "Something went wrong loading the video. Check the URL!")
+        if self.videoActivity.isAnimating() {
+            self.videoActivity.stopAnimating()
+        }
     }
     
     @IBAction func ShowSavedTweets(sender: AnyObject) {
         self.performSegueWithIdentifier("ShowSavedTweets", sender: self)
-        
-        
     }
+    
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if(segue.identifier == "TwitterContainerSeg") {
-            self.pageController = segue.destinationViewController as? ViewController
+            self.pageController = segue.destinationViewController as? PageViewController
             
         }
-        else if(segue.identifier == "ShowSavedTweets") {
-            var tweetVC = segue.destinationViewController as? TwitterFeedTableViewController
-            tweetVC?.viewingSavedTweets = true
-        }
     }
     
-    func stopActivityIndicator() {
-        self.activityIndicator.stopAnimating()
-    }
-    
-    //MARK: - Notifications
-    
-    func registerNotifications() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "stopActivityIndicator", name: tweetsDidLoadAsynchronously, object: nil)
-    }
-    
-    func deregisterNotifications() {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+    @IBAction func LogoutClicked(sender: AnyObject) {
+        PFUser.logOut()
+        self.performSegueWithIdentifier("Logout", sender: self)
     }
     
 }

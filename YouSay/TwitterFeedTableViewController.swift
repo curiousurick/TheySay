@@ -13,11 +13,15 @@ import TwitterKit
 class TwitterFeedTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, TWTRTweetViewDelegate, UIAlertViewDelegate {
     
     @IBOutlet var tableView: UITableView!
+    @IBOutlet weak var noTweetsLabel: UILabel!
+    @IBOutlet weak var twitterActivity: UIActivityIndicatorView!
+    
     var refreshControl: UIRefreshControl!
     var selectedTweet: TWTRTweet?
     var networkingEngine = NetworkingEngine()
     var videoId: String?
     
+    var tweetIds = [String]()
     var tweets: [TWTRTweet] = [] {
         didSet {
             tableView.reloadData()
@@ -26,61 +30,119 @@ class TwitterFeedTableViewController: UIViewController, UITableViewDataSource, U
     var loaded: Bool?
     var viewingSavedTweets: Bool?
     
-    var tweetIds = [String]()
-    
     let tweetTableReuseIdentifier = "TweetCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //tableView.estimatedRowHeight = 150
-        //tableView.rowHeight = UITableViewAutomaticDimension
+        //for when viewing all related tweets
+        self.noTweetsLabel.hidden = true
+        self.twitterActivity.startAnimating()
+        //for ending the table view pretty
         tableView.tableFooterView = UIView(frame: CGRect(x: 0,y: 0,width: 0,height: 0))
         tableView.registerClass(TWTRTweetTableViewCell.self, forCellReuseIdentifier: tweetTableReuseIdentifier)
         
-        if self.viewingSavedTweets == false {
-            self.refreshControl = UIRefreshControl()
-            self.refreshControl.tintColor = UIColor.grayColor()
-            self.refreshControl.addTarget(self, action: "loadTweetsOnRefresh", forControlEvents: UIControlEvents.ValueChanged)
-            self.tableView.addSubview(refreshControl)
-        }
-        else {
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.tintColor = UIColor.grayColor()
+        self.refreshControl.addTarget(self, action: "loadTweetsOnRefresh", forControlEvents: UIControlEvents.ValueChanged)
+        self.tableView.addSubview(refreshControl)
+        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        if (self.viewingSavedTweets == true) {
             self.navigationItem.title = "Saved Tweets"
-            var query = PFQuery(className: "Tweets")
-            query.whereKey("createdBy", equalTo:PFUser.currentUser()!.objectId!)
-            query.findObjectsInBackgroundWithBlock({ (objects:[AnyObject]?, error:NSError?) -> Void in
-                for object in objects! {
-                    self.tweetIds.append((object["TweetId"] as? String)!)
-                }
-                self.networkingEngine.loadTweetsWithIds(self.tweetIds, completionHandler: { (success, tweets, loaded) -> Void in
-                    if(success) {
-                        self.tweets = tweets!
-                        self.loaded = loaded
-                        self.tableView.reloadData()
-                    }
-                    else {
-                        var alert = UIAlertView(title: "Oops!", message: "Looks like something went wrong trying to load the tweets", delegate: nil, cancelButtonTitle: "OK")
-                    }
-                })
-            })
+            
+            //for when viewing only saved tweets.
+            self.noTweetsLabel.hidden = true
+            //Using parse database
+            self.getTweetIdsFromParse()
         }
     }
     
-    func loadTweetsOnRefresh() {
-        self.networkingEngine.searchForTweets(self.videoId, completionHandler: { (tweetIds) -> Void in
-            self.tweetIds = tweetIds!
-            self.networkingEngine.loadTweetsWithIds(self.tweetIds, completionHandler: { (success, tweets, loaded) -> Void in
-                if(success) {
-                    self.tweets = tweets!
-                    self.loaded = loaded
-                    self.tableView.reloadData()
-                    self.refreshControl.endRefreshing()
-                    
+    
+    func getTweetIdsFromParse() {
+        var query = PFQuery(className: "Tweets")
+        //detects ownership
+        query.whereKey("createdBy", equalTo:PFUser.currentUser()!.objectId!)
+        query.findObjectsInBackgroundWithBlock({ (objects:[AnyObject]?, error:NSError?) -> Void in
+            if self.refreshControl.refreshing {
+                self.refreshControl.endRefreshing()
+            }
+            if self.twitterActivity.isAnimating() {
+                self.twitterActivity.stopAnimating()
+            }
+            if error == nil {
+                for object in objects! {
+                    var newTweetId = object["TweetId"] as? String
+                    if let index = find(self.tweetIds, newTweetId!) {
+                        //do nothing
+                    }
+                    else if newTweetId != nil {
+                        self.tweetIds.append((object["TweetId"] as? String)!)
+                    }
+                }
+                if self.tweetIds.count > 0 {
+                    //load saved tweets
+                    self.loadTweetsUsingIds(self.tweetIds)
                 }
                 else {
-                    var alert = UIAlertView(title: "Oops!", message: "Looks like something went wrong trying to load the tweets", delegate: nil, cancelButtonTitle: "OK")
+                    self.noTweetsLabel.hidden = false
+                }
+            }
+            else {
+                AppUtils.showAlert("Oops", message: "Looks like something went wrong getting your saved tweet")
+            }
+        })
+    }
+    
+    func loadTweetsUsingIds(tweetIds:[String]) {
+        self.networkingEngine.loadTweetsWithIds(tweetIds, completionHandler: { (success, responseTweets, loaded) -> Void in
+            if self.refreshControl.refreshing {
+                self.refreshControl.endRefreshing()
+            }
+            if self.twitterActivity.isAnimating() {
+                self.twitterActivity.stopAnimating()
+            }
+            if success {
+                if responseTweets!.count > 0 {
+                    self.tweets = responseTweets!
+                    self.loaded = loaded
+                    
+                    return;
+                }
+            }
+            else {
+                AppUtils.showAlert("Oops!", message: "Could not load tweets")
+                if self.twitterActivity.isAnimating() {
+                    self.twitterActivity.stopAnimating()
+                }
+            }
+        })
+    }
+    
+    func loadTweetsOnRefresh() {
+        self.noTweetsLabel.hidden = true
+        if (self.viewingSavedTweets == false) {
+            self.networkingEngine.searchForTweets(self.videoId, completionHandler: { (tweetIds, error) -> Void in
+                if self.refreshControl.refreshing {
+                    self.refreshControl.endRefreshing()
+                }
+                if self.twitterActivity.isAnimating() {
+                    self.twitterActivity.stopAnimating()
+                }
+                if error == nil {
+                    self.tweetIds = tweetIds!
+                    self.loadTweetsUsingIds(self.tweetIds)
+                }
+                else {
+                    AppUtils.showAlert("Oops!", message: "Could not load tweets")
+                    
                 }
             })
-        })
+        }
+        else {
+            self.getTweetIdsFromParse()
+        }
     }
     
     func tweetView(tweetView: TWTRTweetView!, didTapURL url: NSURL!) {
@@ -93,21 +155,19 @@ class TwitterFeedTableViewController: UIViewController, UITableViewDataSource, U
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
     }
     
-    // MARK: - Table view data source
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
         return 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
-        if self.viewingSavedTweets == false {
+        if (self.tweets.count == 0 && self.loaded == true) {
+            self.noTweetsLabel.hidden = false
+        }
+        if (self.viewingSavedTweets == false && self.loaded == true) {
             return self.tweets.count + 1
         }
         else {
@@ -116,10 +176,8 @@ class TwitterFeedTableViewController: UIViewController, UITableViewDataSource, U
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var checkForFeedOrSavedTweets = -1
-        if self.viewingSavedTweets == true {
-            checkForFeedOrSavedTweets = 0
-        }
+        var checkForFeedOrSavedTweets = self.viewingSavedTweets == true ? 0 : -1
+        
         if(indexPath.row == 0 && self.viewingSavedTweets == false) {
             let cell = tableView.dequeueReusableCellWithIdentifier("SendATweetCell", forIndexPath: indexPath) as! UITableViewCell
             cell.textLabel!.text = "Tweet about this video!"
@@ -136,25 +194,28 @@ class TwitterFeedTableViewController: UIViewController, UITableViewDataSource, U
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var checkForFeedOrSavedTweets = -1
-        if self.viewingSavedTweets == true {
-            checkForFeedOrSavedTweets = 0
-        }
+        var checkForFeedOrSavedTweets = self.viewingSavedTweets == true ? 0 : -1
         
         if(indexPath.row == 0 && self.viewingSavedTweets == false) {
             return 44
         }
+        
+        //if viewing all related tweets, indexPath.row 0 is reserved for Tweeting.
         let tweet = tweets[indexPath.row + checkForFeedOrSavedTweets]
         return TWTRTweetTableViewCell.heightForTweet(tweet, width:CGRectGetWidth(self.view.bounds))
     }
     
     func tweetView(tweetView: TWTRTweetView!, didSelectTweet tweet: TWTRTweet!) {
+        self.selectedTweet = tweet
         if self.viewingSavedTweets == false {
-            self.selectedTweet = tweet
             var saveTweetAlert = UIAlertView(title: "Save Tweet", message: "Do you want to save this tweet?", delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "OK")
-            
             saveTweetAlert.show()
         }
+        else {
+            var saveTweetAlert = UIAlertView(title: "Delete Tweet?", message: "Do you want to delete this tweet?", delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "OK")
+            saveTweetAlert.show()
+        }
+        
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -166,7 +227,8 @@ class TwitterFeedTableViewController: UIViewController, UITableViewDataSource, U
         }
     }
     
-    func tweetVideo(completionHandler:()-> Void) {
+    
+    func tweetVideo(completionHandler:() -> Void) {
         let composer = TWTRComposer()
         var text = "http://youtu.be/\(self.videoId!)"
         if self.videoId != nil {
@@ -175,22 +237,48 @@ class TwitterFeedTableViewController: UIViewController, UITableViewDataSource, U
         
         composer.showWithCompletion { (result) -> Void in
             if (result == TWTRComposerResult.Cancelled) {
-                println("Tweet composition cancelled")
             }
             else {
-                println("Sending tweet!")
+                AppUtils.showAlert("Yay!", message: "You tweeted about this video!")
             }
         }
     }
     
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         if(buttonIndex == 1) {
-            var tweetId = PFObject(className: "Tweets")
-            tweetId["TweetId"] = self.selectedTweet?.tweetID
-            var user = PFUser.currentUser()
-            tweetId["createdBy"] = user?.objectId
-            user?.addObject(tweetId, forKey: "Tweets")
-            user?.saveInBackground()
+            let user = PFUser.currentUser()
+            if(self.viewingSavedTweets == false) {
+                var tweetId = PFObject(className: "Tweets")
+                tweetId["TweetId"] = self.selectedTweet?.tweetID
+                tweetId["createdBy"] = user?.objectId
+                user?.addObject(tweetId, forKey: "Tweets")
+                user?.saveInBackground()
+            }
+            else {
+                var query = PFQuery(className: "Tweets")
+                query.whereKey("createdBy", equalTo: user!.objectId!)
+                query.whereKey("TweetId", equalTo: self.selectedTweet!.tweetID)
+                query.getFirstObjectInBackgroundWithBlock({ (object: PFObject?, error:NSError?) -> Void in
+                    object?.deleteInBackgroundWithBlock({ (success, error) -> Void in
+                        if error == nil {
+                            if let index = find(self.tweetIds, self.selectedTweet!.tweetID) {
+                                var indexPath = NSIndexPath(forRow: index, inSection: 0)
+                                self.tableView.beginUpdates()
+                                self.tweetIds.removeAtIndex(indexPath.row)
+                                self.tweets.removeAtIndex(indexPath.row)
+                                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                                self.tableView.endUpdates()
+                            }
+                            else {
+                                AppUtils.showAlert("Oops", message: "Something went wrong in deleting the tweet")
+                            }
+                        }
+                        else {
+                            AppUtils.showAlert("Oops", message: "Something went wrong. Check your internet Connection")
+                        }
+                    })
+                })
+            }
         }
     }
     
@@ -201,71 +289,16 @@ class TwitterFeedTableViewController: UIViewController, UITableViewDataSource, U
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete {
             
-            var user = PFUser.currentUser()
-            //var tweetId = PFObject(className: "Tweets")
-            var query = PFQuery(className: "Tweets")
-            query.whereKey("createdBy", equalTo: user!.objectId!)
-            query.whereKey("TweetId", equalTo: self.tweetIds[indexPath.row])
-            query.getFirstObjectInBackgroundWithBlock({ (object: PFObject?, error:NSError?) -> Void in
-                object?.deleteInBackground()
-                
-            })
             self.tweetIds.removeAtIndex(indexPath.row)
             self.tweets.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
             
             
-//            self.tweets.removeAtIndex(indexPath.row)
-//            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
         }
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
     }
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return NO if you do not want the specified item to be editable.
-    return true
-    }
-    */
-    
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    if editingStyle == .Delete {
-    // Delete the row from the data source
-    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-    } else if editingStyle == .Insert {
-    // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }
-    }
-    */
-    
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-    
-    }
-    */
-    
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return NO if you do not want the item to be re-orderable.
-    return true
-    }
-    */
-    
-    /*
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    }
-    */
     
 }

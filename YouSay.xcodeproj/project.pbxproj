@@ -37,9 +37,9 @@
 		5E0169A51AE84078006313F2 /* TwitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E0169A21AE84078006313F2 /* TwitterKit.framework */; };
 		5E0169A61AE84078006313F2 /* TwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5E0169A31AE84078006313F2 /* TwitterKitResources.bundle */; };
 		5E0169A71AE84078006313F2 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E0169A41AE84078006313F2 /* Fabric.framework */; };
-		5E6786951AE8B18700F0D71B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6786941AE8B18700F0D71B /* ViewController.swift */; };
+		5E4AA0B71AECFBC700EE0F67 /* AppUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4AA0B61AECFBC700EE0F67 /* AppUtils.swift */; };
+		5E4AA0B91AECFBE100EE0F67 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4AA0B81AECFBE100EE0F67 /* PageViewController.swift */; };
 		5E6786971AE8B1EE00F0D71B /* CAPSPageMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6786961AE8B1EE00F0D71B /* CAPSPageMenu.swift */; };
-		5E6786991AE8B20500F0D71B /* FeedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6786981AE8B20500F0D71B /* FeedTableViewController.swift */; };
 		5EF9DD3D1AE881AF00149DC9 /* NetworkingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF9DD3C1AE881AF00149DC9 /* NetworkingEngine.swift */; };
 		8CC24C261AE9C37C0099B2DA /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC24C081AE9C37C0099B2DA /* AsyncButton.swift */; };
 		8CC24C271AE9C37C0099B2DA /* AsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC24C091AE9C37C0099B2DA /* AsyncImageView.swift */; };
@@ -132,9 +132,9 @@
 		5E0169A21AE84078006313F2 /* TwitterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TwitterKit.framework; path = ../TwitterKit.framework; sourceTree = "<group>"; };
 		5E0169A31AE84078006313F2 /* TwitterKitResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TwitterKitResources.bundle; path = ../TwitterKit.framework/Versions/A/Resources/TwitterKitResources.bundle; sourceTree = "<group>"; };
 		5E0169A41AE84078006313F2 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = ../Fabric.framework; sourceTree = "<group>"; };
-		5E6786941AE8B18700F0D71B /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		5E4AA0B61AECFBC700EE0F67 /* AppUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppUtils.swift; sourceTree = "<group>"; };
+		5E4AA0B81AECFBE100EE0F67 /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		5E6786961AE8B1EE00F0D71B /* CAPSPageMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAPSPageMenu.swift; sourceTree = "<group>"; };
-		5E6786981AE8B20500F0D71B /* FeedTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedTableViewController.swift; sourceTree = "<group>"; };
 		5EF9DD3C1AE881AF00149DC9 /* NetworkingEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkingEngine.swift; sourceTree = "<group>"; };
 		8CC24C081AE9C37C0099B2DA /* AsyncButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncButton.swift; sourceTree = "<group>"; };
 		8CC24C091AE9C37C0099B2DA /* AsyncImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncImageView.swift; sourceTree = "<group>"; };
@@ -232,11 +232,11 @@
 				5E0168FC1AE77BD4006313F2 /* SplashViewController.swift */,
 				5E6786961AE8B1EE00F0D71B /* CAPSPageMenu.swift */,
 				5E0168FE1AE77BD4006313F2 /* Main.storyboard */,
-				5E6786981AE8B20500F0D71B /* FeedTableViewController.swift */,
 				5E0169721AE824C9006313F2 /* TwitterFeedTableViewController.swift */,
 				5E01694B1AE79273006313F2 /* MainViewController.swift */,
 				5EF9DD3C1AE881AF00149DC9 /* NetworkingEngine.swift */,
-				5E6786941AE8B18700F0D71B /* ViewController.swift */,
+				5E4AA0B81AECFBE100EE0F67 /* PageViewController.swift */,
+				5E4AA0B61AECFBC700EE0F67 /* AppUtils.swift */,
 				5E0169011AE77BD4006313F2 /* Images.xcassets */,
 				5E0169031AE77BD4006313F2 /* LaunchScreen.xib */,
 				5E0168F81AE77BD4006313F2 /* Supporting Files */,
@@ -397,7 +397,7 @@
 				TargetAttributes = {
 					5E0168F41AE77BD4006313F2 = {
 						CreatedOnToolsVersion = 6.3;
-						DevelopmentTeam = 35W56JPP75;
+						DevelopmentTeam = RSD59C8W5X;
 					};
 					5E0169091AE77BD4006313F2 = {
 						CreatedOnToolsVersion = 6.3;
@@ -478,12 +478,11 @@
 				8CC24C2F1AE9C37C0099B2DA /* DesignableTextView.swift in Sources */,
 				8CC24C301AE9C37C0099B2DA /* DesignableView.swift in Sources */,
 				5E0168FD1AE77BD4006313F2 /* SplashViewController.swift in Sources */,
+				5E4AA0B71AECFBC700EE0F67 /* AppUtils.swift in Sources */,
 				8CC24C411AE9C37C0099B2DA /* TransitionZoom.swift in Sources */,
 				5E0169731AE824C9006313F2 /* TwitterFeedTableViewController.swift in Sources */,
-				5E6786991AE8B20500F0D71B /* FeedTableViewController.swift in Sources */,
 				8CC24C291AE9C37C0099B2DA /* BlurView.swift in Sources */,
 				8CC24C381AE9C37C0099B2DA /* Spring.swift in Sources */,
-				5E6786951AE8B18700F0D71B /* ViewController.swift in Sources */,
 				8CC24C421AE9C37C0099B2DA /* UnwindSegue.swift in Sources */,
 				8CC24C371AE9C37C0099B2DA /* SoundPlayer.swift in Sources */,
 				5E0168FB1AE77BD4006313F2 /* AppDelegate.swift in Sources */,
@@ -501,6 +500,7 @@
 				8CC24C3F1AE9C37C0099B2DA /* SpringView.swift in Sources */,
 				8CC24C2C1AE9C37C0099B2DA /* DesignableLabel.swift in Sources */,
 				8CC24C3A1AE9C37C0099B2DA /* SpringButton.swift in Sources */,
+				5E4AA0B91AECFBE100EE0F67 /* PageViewController.swift in Sources */,
 				8CC24C391AE9C37C0099B2DA /* SpringAnimation.swift in Sources */,
 				8CC24C3D1AE9C37C0099B2DA /* SpringTextField.swift in Sources */,
 				8CC24C341AE9C37C0099B2DA /* LoadingView.swift in Sources */,

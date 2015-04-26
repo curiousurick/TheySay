@@ -11,8 +11,6 @@ import Parse
 import Fabric
 import TwitterKit
 
-var tweetsDidLoadAsynchronously = "tweetsDidLoadAsynchronously"
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -21,20 +19,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         Parse.enableLocalDatastore()
+        //Initialize Twitter/Fabric
         Fabric.with([Twitter()])
         // Initialize Parse.
         Parse.setApplicationId("n8JolGHQ4VMQ1dinZaBpTXmdMwGCUjiEUUmjcsgb",
             clientKey: "bJNHgbVUqRDbSBqK6c4Pi4S3OvkM37J3TODIAWmS")
-        PFTwitterUtils.initializeWithConsumerKey("dZCDuwg56yYLfc9CgwsiB3jX6",
-            consumerSecret:"ZGxOe2JbYbmCjhC3RHBm37HqqppRkVN10lIFcuVy8PyyOqmUv9")
-        
+        PFTwitterUtils.initializeWithConsumerKey("XovhOg4IQpvQh8AcyglnKAwV4",
+            consumerSecret:"0QXZfuGy2RSGIt2LDRHoHVyrnD62EZI4XopKbhNvXKg0TIx9LE")
         PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
+        
+        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        var storyboard = UIStoryboard(name: "Main", bundle: nil)
+        var viewController: UIViewController
+        
+        if let user = PFUser.currentUser() {
+            viewController = storyboard.instantiateViewControllerWithIdentifier("TwitterFeedNav") as! UINavigationController
+            
+        }
+        else {
+            viewController = storyboard.instantiateViewControllerWithIdentifier("Splash") as! SplashViewController
+        }
+        
+        self.window?.rootViewController = viewController
+        self.window?.makeKeyAndVisible()
+        
+        
+        
+        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
         return true
     }
 
     func applicationWillResignActive(application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+        
     }
 
     func applicationDidEnterBackground(application: UIApplication) {

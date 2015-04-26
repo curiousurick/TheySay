@@ -12,6 +12,8 @@ import Parse
 
 class NetworkingEngine: NSObject {
     
+    
+    //This uses Parse to login with Twitter.
     func loginWithTwitter(completionHandler:(success: String?) -> Void) {
         PFTwitterUtils.logInWithBlock {
             (user: PFUser?, error: NSError?) -> Void in
@@ -22,32 +24,31 @@ class NetworkingEngine: NSObject {
                     completionHandler(success: "Login")
                 }
             } else {
+                println(error)
                 completionHandler(success: "Failed")
             }
         }
     }
     
+    //This takes an array of IDs and loads all the tweets
     func loadTweetsWithIds(tweetIds:[String], completionHandler:(success: Bool, tweets: [TWTRTweet]?, loaded: Bool?) -> Void) {
-        var tweets: [TWTRTweet] = [] {
-            didSet {
-            }
-        }
+        var tweets: [TWTRTweet] = []
+        
         Twitter.sharedInstance().APIClient.loadTweetsWithIDs(tweetIds) { tweets, error in
             if tweetIds.count > 0 {
-                if let ts = tweets as? [TWTRTweet] {
+                if var ts = tweets as? [TWTRTweet] {
                     completionHandler(success: true, tweets: ts, loaded: true)
                     
-                    } else {
-                    completionHandler(success: false, tweets: nil, loaded: nil)
-                    println("Failed to load tweets: \(error.localizedDescription)")
+                } else {
+                    completionHandler(success: false, tweets: nil, loaded: true)
                 }
             }
         }
     }
     
-    func searchForTweets(searchTerm: String?, completionHandler:(tweetIds:[String]?) -> Void) -> Void {
+    //This gets the Tweet IDs related to the Youtube video being watched.
+    func searchForTweets(searchTerm: String?, completionHandler:(tweetIds:[String]?, error: NSError?) -> Void) -> Void {
         var tweetIdsArray = [String]()
-        
         
         var requestUrl = "https://api.twitter.com/1.1/search/tweets.json"
         
@@ -55,30 +56,31 @@ class NetworkingEngine: NSObject {
         var clientError : NSError?
         let request = Twitter.sharedInstance().APIClient.URLRequestWithMethod("GET", URL: requestUrl, parameters: params, error: &clientError)
         
+        
+        //because so much is optional, crazy amount of if statements
         if request != nil {
             Twitter.sharedInstance().APIClient.sendTwitterRequest(request) {(response, data, connectionError) -> Void in
                 if(connectionError == nil) {
                     var jsonError : NSError?
-                    let json : NSDictionary? = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &jsonError) as? NSDictionary
-                    var tweetsArray = json?.valueForKey("statuses") as? [NSDictionary]
-                    //println(tweetsArray!.description)
-                    for tweet in tweetsArray! {
-                        var tweetId = (tweet.valueForKey("id") as? NSNumber)!
-                        var idString = tweetId.stringValue
-                        tweetIdsArray.append(idString)
+                    if let json : NSDictionary? = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &jsonError) as? NSDictionary {
+                        if var tweetsArray = json?.valueForKey("statuses") as? [NSDictionary] {
+                            for tweet in tweetsArray {
+                                if var tweetId = (tweet.valueForKey("id") as? NSNumber) {
+                                    var idString = tweetId.stringValue
+                                    tweetIdsArray.append(idString)
+                                }
+                            }
+                        }
+                        completionHandler(tweetIds: tweetIdsArray, error: nil)
                     }
-                    
-                    completionHandler(tweetIds: tweetIdsArray)
-                    //println(tweetIdsArray.description)
                 }
                 else {
-                    println("Error: \(connectionError)")
+                    completionHandler(tweetIds: nil, error: connectionError)
                 }
             }
         }
         else {
-            println("Error: \(clientError)")
+            completionHandler(tweetIds: nil, error: clientError)
         }
     }
-    
 }
